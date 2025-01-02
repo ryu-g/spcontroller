@@ -1,0 +1,61 @@
+<!-- game.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game</title>
+    <style>
+        canvas { border: 1px solid black; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="500" height="500"></canvas>
+    <span id = "c"></span>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let player = { x: 250, y: 250, size: 20 };
+
+        socket.on("updatePosition", (data) => {
+            if (data.direction === "up") player.y -= 10;
+            if (data.direction === "down") player.y += 10;
+            if (data.direction === "left") player.x -= 10;
+            if (data.direction === "right") player.x += 10;
+        });
+        socket.on("updateAction", (data) => {
+            if (data.kind === "action") action();
+            if (data.kind === "cancel") cancel();
+        })
+
+        function action(){
+            insertLog("Aボタンが押されたぞ!");
+        }
+        function cancel(){
+            insertLog("Bボタンが押されたぞ!");
+        }
+        function insertLog(message){
+            const logs = document.getElementById("logs");
+            const date = new Date;
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            const day = date.toLocaleDateString().slice(5);
+            const clock = date.toLocaleTimeString().slice(0, -3);
+            const now = `${year}.${month}.${day}.${clock}`;
+            nlog = document.createElement('li');
+            nlog.innerText = `${now} : ${message}`;
+            logs.prepend(nlog)
+        }
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "blue";
+            ctx.fillRect(player.x, player.y, player.size, player.size);
+            requestAnimationFrame(gameLoop);
+        }
+        gameLoop();
+    </script>
+    <div id="logs"></div>
+</body>
+</html>

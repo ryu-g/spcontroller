@@ -1,0 +1,75 @@
+<!-- controller.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controller</title>
+    <style>
+        html {
+            touch-action: manipulation;
+        }
+        body {
+            background-color: #666;
+            padding: 20px;
+            transform: rotate(90deg);
+        }
+        .controller{
+            display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: 360px 120px;
+            grid-gap: 120px;
+            user-select: none;
+        }
+        .arrows{
+            display: grid;
+            grid-template-rows: 120px 120px 120px;
+            grid-template-columns: 120px 120px 120px;
+        }
+        .actions{
+            display: grid;
+            grid-template-rows: 120px 120px 120px;
+            grid-template-columns: 120px;
+        }
+        button {
+            display: block;
+            color: #666;
+            width: 120px;
+            height: 120px;
+            font-size: 48px;
+            font-weight: 900;
+        }
+        </style>
+</head>
+<body>
+    <div class="controller">
+        <div class="arrows">
+            <div></div>
+            <button id="up">▲</button>
+            <div></div>
+            <button id="left">◀</button>
+            <div></div>
+            <button id="right">▶</button>
+            <div></div>
+            <button id="down">▼</button>
+            <div></div>
+        </div>
+        <div class="actions">
+            <button id = "action">A</button>
+            <div></div>
+            <button id = "cancel">B</button>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        document.getElementById("up").addEventListener("click", () => socket.emit("move", { direction: "up" }));
+        document.getElementById("down").addEventListener("click", () => socket.emit("move", { direction: "down" }));
+        document.getElementById("left").addEventListener("click", () => socket.emit("move", { direction: "left" }));
+        document.getElementById("right").addEventListener("click", () => socket.emit("move", { direction: "right" }));
+        document.getElementById("action").addEventListener("click", () => socket.emit("act", { kind: "action" }));
+        document.getElementById("cancel").addEventListener("click", () => socket.emit("act", { kind: "cancel" }));
+    </script>
+</body>
+</html>
