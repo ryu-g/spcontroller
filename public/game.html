@@ -22,7 +22,7 @@
 
         socket.on("updatePosition", (data) => {
             players = []
-            data.forEach(p => players.push({ x: 250+(p.x*10), y: 250+(p.y*10), size: 20 }));
+            data.forEach(p => players.push({ x: 250+(p.x*10), y: 250+(p.y*10), size: 20, color: p.color }));
         });
         socket.on("updateAction", (data) => {
             if (data.kind === "action") action(data.id);
@@ -49,8 +49,10 @@
         }
         function gameLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "blue";
-            players.forEach(p => ctx.fillRect(p.x, p.y, p.size, p.size));
+            players.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size)
+            });
             requestAnimationFrame(gameLoop);
         }
         gameLoop();
