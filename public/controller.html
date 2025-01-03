@@ -64,12 +64,17 @@
     <script>
         const socket = io();
         socket.emit("enter", "")
-        document.getElementById("up").addEventListener("click", () => socket.emit("move", { direction: "up" }));
-        document.getElementById("down").addEventListener("click", () => socket.emit("move", { direction: "down" }));
-        document.getElementById("left").addEventListener("click", () => socket.emit("move", { direction: "left" }));
-        document.getElementById("right").addEventListener("click", () => socket.emit("move", { direction: "right" }));
-        document.getElementById("action").addEventListener("click", () => socket.emit("act", { kind: "action" }));
-        document.getElementById("cancel").addEventListener("click", () => socket.emit("act", { kind: "cancel" }));
+        document.getElementById("up").addEventListener("click", () =>socket.emit("move", { direction: "up" }));
+        document.getElementById("down").addEventListener("click", () =>socket.emit("move", { direction: "down" }));
+        document.getElementById("left").addEventListener("click", () =>socket.emit("move", { direction: "left" }));
+        document.getElementById("right").addEventListener("click", () =>socket.emit("move", { direction: "right" }));
+        document.getElementById("action").addEventListener("click", () =>socket.emit("act", { kind: "action" }));
+        document.getElementById("cancel").addEventListener("click", () =>socket.emit("act", { kind: "cancel" }));
+        document.getElementByTagName("button").addEventListener("click", ()=>{
+            window.navigator.vibrate(200);
+            window.navigator.mozVibrate(200);
+            window.navigator.webkitVibrate(200);
+        })
     </script>
 </body>
 </html>
