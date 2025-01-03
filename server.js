@@ -47,6 +47,7 @@ io.on("connection", (socket) => {
         socket.isController = true
         socket.color = generateRGB(socket.id)
         socket.broadcast.emit("updatePosition", clients());
+        socket.broadcast.emit("enterMember", socket.id);
     });
 
     socket.on("act", (data) => {
@@ -66,8 +67,9 @@ io.on("connection", (socket) => {
     });
     
     socket.on("disconnect", () => {
-        console.log("A user disconnected:", socket.id);
-        socket.broadcast.emit("updatePosition", clients());
+      console.log("A user disconnected:", socket.id);
+      socket.broadcast.emit("updatePosition", clients());
+      socket.broadcast.emit("exitMember", socket.id);
     });
 });
 
