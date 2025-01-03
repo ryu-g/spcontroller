@@ -18,23 +18,22 @@
         const ctx = canvas.getContext("2d");
 
         let player = { x: 250, y: 250, size: 20 };
+        let players = []
 
         socket.on("updatePosition", (data) => {
-            if (data.direction === "up") player.y -= 10;
-            if (data.direction === "down") player.y += 10;
-            if (data.direction === "left") player.x -= 10;
-            if (data.direction === "right") player.x += 10;
+            players = []
+            data.forEach(p => players.push({ x: 250+(p.x*10), y: 250+(p.y*10), size: 20 }));
         });
         socket.on("updateAction", (data) => {
-            if (data.kind === "action") action();
-            if (data.kind === "cancel") cancel();
+            if (data.kind === "action") action(data.id);
+            if (data.kind === "cancel") cancel(data.id);
         })
 
-        function action(){
-            insertLog("Aボタンが押されたぞ!");
+        function action(id){
+            insertLog(id+"がAボタンを押したぞ!");
         }
-        function cancel(){
-            insertLog("Bボタンが押されたぞ!");
+        function cancel(id){
+            insertLog(id+"がBボタンを押したぞ!");
         }
         function insertLog(message){
             const logs = document.getElementById("logs");
@@ -51,7 +50,7 @@
         function gameLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "blue";
-            ctx.fillRect(player.x, player.y, player.size, player.size);
+            players.forEach(p => ctx.fillRect(p.x, p.y, p.size, p.size));
             requestAnimationFrame(gameLoop);
         }
         gameLoop();
