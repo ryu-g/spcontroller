@@ -17,7 +17,11 @@
         const socket = io();
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
+<<<<<<< HEAD
         let inRange = x=>x>=0?x%500:(500+x)%500
+=======
+        let inRange = x=>x>=0?x%500:500+(x%500)
+>>>>>>> feature/loop_and_show_member_num
 
         let player = { x: 250, y: 250, size: 20 };
         let players = []
