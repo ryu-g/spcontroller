@@ -42,13 +42,13 @@ io.on("connection", (socket) => {
             case "down":socket.y++;break;
             case "right":socket.x++;break;
             case "left":socket.x--;break;
-        }        
+        }
         socket.broadcast.emit("updatePosition", clients());
     });
     
     socket.on("disconnect", () => {
-      console.log("A user disconnected:", socket.id);
-      socket.broadcast.emit("updatePosition", clients());
+        console.log("A user disconnected:", socket.id);
+        socket.broadcast.emit("updatePosition", clients());
     });
 });
 
