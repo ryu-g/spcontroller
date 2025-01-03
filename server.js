@@ -40,8 +40,8 @@ io.on("connection", (socket) => {
         switch(data.direction){
             case "up":socket.y--;break;
             case "down":socket.y++;break;
-            case "right":socket.x--;break;
-            case "left":socket.x++;break;
+            case "right":socket.x++;break;
+            case "left":socket.x--;break;
         }        
         socket.broadcast.emit("updatePosition", clients());
     });
