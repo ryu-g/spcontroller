@@ -1,14 +1,26 @@
 <!-- game.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <title>Game</title>
     <style>
-        canvas { border: 1px solid black; display: block; margin: 0 auto; }
+        canvas { border: 8px solid #999; display: block; margin: 0 auto;background-color: #fafafa; }
+        body{ background-color: #aaa; }
+        ul{padding-left:0;}
+        li{list-style:none;}
+        #logs{
+                display: block;
+                width: 800px;
+                height: 180px;
+                margin: 20px auto;
+                padding: 20px;
+                overflow: scroll;
+                background-color: #eaeaea;
+            }
     </style>
 </head>
-<body>
+<body>  
     <p>現在：<span id="member">0</span>人</p>
     <canvas id="gameCanvas" width="500" height="500"></canvas>
     <span id = "c"></span>
@@ -62,6 +74,13 @@
             nlog = document.createElement('li');
             nlog.innerText = `${now} : ${message}`;
             logs.prepend(nlog)
+            const items = document.querySelectorAll('li');
+            items.forEach((item, index) => {
+                if(index!=0){
+                    const opacity = 0.4;
+                    item.style.color = `rgba(0, 0, 0, ${opacity})`;
+                }
+            });
         }
         function gameLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
