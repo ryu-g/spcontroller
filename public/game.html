@@ -14,31 +14,36 @@
     <span id = "c"></span>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        const map_size = 500
+        const origin = map_size/2
         const socket = io();
         const canvas = document.getElementById("gameCanvas");
+        canvas.width = map_size
+        canvas.height = map_size
         const ctx = canvas.getContext("2d");
-        let inRange = x=>(x>=0?x:500+(x%500))%500
+        let inRange = x=>(x>=0?x:map_size+(x%map_size))%map_size
 
-        let player = { x: 250, y: 250, size: 20 };
         let players = []
 
         socket.on("updatePosition", (data) => {
             players = []
-            data.forEach(p => players.push({ x: inRange(250+(p.x*10)), y: inRange(250+(p.y*10))%500, size: 20, color: p.color }));
+            data.forEach(p => players.push({ x: inRange(origin+(p.x*10)), y: inRange(origin+(p.y*10)), size: 20, color: p.color }));
         });
+
         socket.on("updateAction", (data) => {
             if (data.kind === "action") action(data.id);
             if (data.kind === "cancel") cancel(data.id);
-        })
+        });
 
         socket.on("enterMember", (user_id) => {
             document.getElementById("member").textContent = players.length
             insertLog(user_id+"が参戦した")
-        })
+        });
+
         socket.on("exitMember", (user_id) => {
             document.getElementById("member").textContent = players.length
             insertLog(user_id+"が退場した")
-        })
+        });
 
         function action(id){
             insertLog(id+"がAボタンを押したぞ!");
@@ -63,7 +68,6 @@
             players.forEach(p => {
                 ctx.fillStyle = p.color;
                 ctx.fillRect(p.x, p.y, p.size, p.size)
-                console.log("coords:",p.x, p.y)
             });
             requestAnimationFrame(gameLoop);
         }
